@@ -1,0 +1,5 @@
+{
+  "name": "Streamtubi",
+  "description": "A production-grade video streaming web platform inspired by Tubi.tv, featuring high-quality on-demand video playback, user management, simulated ad-based monetization, and a full admin CMS with AI-powered content generation.",
+  "requestFramePermissions": []
+}
