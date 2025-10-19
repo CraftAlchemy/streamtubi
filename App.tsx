@@ -1,17 +1,17 @@
-
 import React from 'react';
 import { HashRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import WatchPage from './pages/WatchPage';
-import LoginPage from './pages/LoginPage';
-import MyListPage from './pages/MyListPage';
-import SubscriptionPage from './pages/SubscriptionPage'; // New Import
 
-// New Admin Imports
-import AdminLayout from './pages/admin/AdminLayout';
+// Layout Imports from new location
+import MainLayout from './pages/_layouts/MainLayout';
+import AdminLayout from './pages/_layouts/AdminLayout';
+
+// Page Imports from new locations
+import HomePage from './pages/user/HomePage';
+import WatchPage from './pages/user/WatchPage';
+import LoginPage from './pages/LoginPage';
+import MyListPage from './pages/user/MyListPage';
+import SubscriptionPage from './pages/user/SubscriptionPage';
 import AnalyticsPage from './pages/admin/AnalyticsPage';
 import VideoManagementPage from './pages/admin/VideoManagementPage';
 import UserManagementPage from './pages/admin/UserManagementPage';
@@ -28,16 +28,6 @@ const PrivateRoute: React.FC<{ adminOnly?: boolean }> = ({ adminOnly = false }) 
   return <Outlet />;
 };
 
-const MainLayout: React.FC = () => (
-  <div className="flex flex-col min-h-screen">
-    <Header />
-    <main className="flex-grow">
-      <Outlet />
-    </main>
-    <Footer />
-  </div>
-);
-
 const App: React.FC = () => {
   return (
     <AppProvider>
@@ -50,7 +40,7 @@ const App: React.FC = () => {
             
             <Route element={<PrivateRoute />}>
               <Route path="/mylist" element={<MyListPage />} />
-              <Route path="/subscribe" element={<SubscriptionPage />} /> {/* New Route */}
+              <Route path="/subscribe" element={<SubscriptionPage />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />
