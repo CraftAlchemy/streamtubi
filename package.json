@@ -5,8 +5,9 @@
   "description": "Frontend and Admin Dashboard for the StreamTubi video streaming platform.",
   "private": true,
   "scripts": {
-    "start": "echo \"This command should be configured to run your development server (e.g., using Vite or Create React App).\"",
-    "build": "echo \"This command should be configured to build the application for production.\"",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -16,9 +17,12 @@
     "react-router-dom": "^7.9.4"
   },
   "devDependencies": {
+    "@types/node": "^20.12.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.4.5"
+    "@vitejs/plugin-react": "^4.3.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
   },
   "author": "AI Engineer",
   "license": "UNLICENSED"

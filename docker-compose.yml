@@ -1,0 +1,26 @@
+
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: streamtubi-frontend
+    ports:
+      - "8080:80"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+# --- Placeholder for Backend Service ---
+#  backend:
+#    build:
+#      context: ./backend # Assuming backend code is in a 'backend' directory
+#      dockerfile: Dockerfile
+#    container_name: streamtubi-backend
+#    ports:
+#      - "3000:3000"
+#    env_file:
+#      - ./backend/.env
+#    restart: unless-stopped
