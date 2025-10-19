@@ -1,10 +1,5 @@
-// Fix: Replace invalid placeholder content with a valid Toast UI component structure.
 import React from 'react';
 import { cn } from '@/lib/utils';
-
-// Note: This file provides the UI components for a Toast system.
-// A full implementation requires a Toast Provider, state management (e.g., via context),
-// and a hook like `useToast()` to trigger toasts, which is beyond the scope of this single file.
 
 const toastVariants = {
     variant: {

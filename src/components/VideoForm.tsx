@@ -1,10 +1,11 @@
-// Fix: Restored correct file content and updated import paths to use the '@' alias.
 import React, { useState, useEffect } from 'react';
 import { Video } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { generateVideoDescription, generateVideoMetadata } from '@/services/geminiService';
+import { sanitizeInput } from '@/lib/utils';
+
 
 interface VideoFormProps {
   video?: Video | null;
@@ -107,9 +108,13 @@ const VideoForm: React.FC<VideoFormProps> = ({ video, onSubmit, onCancel, isSubm
     e.preventDefault();
     const videoData = {
       ...formData,
+      title: sanitizeInput(formData.title),
+      description: sanitizeInput(formData.description),
+      category: sanitizeInput(formData.category),
+      ageRating: sanitizeInput(formData.ageRating),
       duration: Number(formData.duration),
-      tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
-      cast: formData.cast.split(',').map(tag => tag.trim()).filter(Boolean),
+      tags: formData.tags.split(',').map(tag => sanitizeInput(tag.trim())).filter(Boolean),
+      cast: formData.cast.split(',').map(tag => sanitizeInput(tag.trim())).filter(Boolean),
       adBreaks: formData.adBreaks.split(',').map(t => parseInt(t.trim(), 10)).filter(t => !isNaN(t)),
     };
     if (video) {
@@ -131,7 +136,7 @@ const VideoForm: React.FC<VideoFormProps> = ({ video, onSubmit, onCancel, isSubm
         <Label htmlFor="description">Description</Label>
          <div className="flex items-start space-x-2">
             <textarea id="description" name="description" value={formData.description} onChange={handleChange} rows={4} className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" required />
-            <Button type="button" onClick={handleGenerateDescription} disabled={isAiBusy} className="h-auto">
+            <Button type="button" onClick={handleGenerateDescription} disabled={isAiBusy || isSubmitting} className="h-auto">
               {isGeneratingDesc ? '...' : '✨ Gen Desc'}
             </Button>
          </div>
@@ -156,7 +161,7 @@ const VideoForm: React.FC<VideoFormProps> = ({ video, onSubmit, onCancel, isSubm
             <Input id="tags" name="tags" value={formData.tags} onChange={handleChange} required />
         </div>
          <div className="md:col-span-2">
-            <Button type="button" variant="outline" size="sm" onClick={handleSuggestMetadata} disabled={isAiBusy}>
+            <Button type="button" variant="outline" size="sm" onClick={handleSuggestMetadata} disabled={isAiBusy || isSubmitting}>
                  {isSuggestingMeta ? 'Suggesting...' : '✨ Suggest Category & Tags with AI'}
             </Button>
         </div>

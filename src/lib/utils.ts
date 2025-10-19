@@ -1,4 +1,3 @@
-// Fix: Restored correct file content that was previously missing.
 type ClassValue = string | number | boolean | undefined | null;
 type ClassDictionary = Record<string, any>;
 type ClassArray = ClassValue[];
@@ -55,4 +54,14 @@ function clsx(...args: (ClassValue|ClassDictionary|ClassArray)[]) {
 // For this app, clsx is sufficient to combine class names.
 export function cn(...inputs: (ClassValue|ClassDictionary|ClassArray)[]) {
   return clsx(inputs);
+}
+
+/**
+ * Strips HTML tags from a string to prevent basic XSS attacks.
+ * This is a client-side first line of defense.
+ * The backend MUST perform its own rigorous sanitization.
+ */
+// Fix: Added and exported the missing sanitizeInput function.
+export function sanitizeInput(input: string): string {
+  return input.replace(/<[^>]*>?/gm, '');
 }

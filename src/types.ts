@@ -1,4 +1,3 @@
-// Fix: Restored correct file content that was previously missing.
 export interface User {
   id: string;
   email: string;
@@ -27,10 +26,13 @@ export interface Category {
   name: string;
 }
 
+// Fix: Exported the Theme type to be used across the application.
+export type Theme = 'light' | 'dark' | 'system';
+
 export interface AppContextType {
   // Theme
-  theme: 'light' | 'dark' | 'system';
-  setTheme: (theme: 'light' | 'dark' | 'system') => void;
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
 
   // Auth
   isAuthenticated: boolean;
@@ -45,7 +47,7 @@ export interface AppContextType {
   categories: Category[];
   getVideoById: (id: string) => Video | undefined;
   getVideosByCategory: (category: string) => Video[];
-  getRecommendedVideos: () => Video[]; // New
+  getRecommendedVideos: () => Video[];
   
   // My List
   addToMyList: (videoId: string) => void;
@@ -56,7 +58,14 @@ export interface AppContextType {
   upgradeToPremium: () => void;
   
   // Admin
-  addVideo: (video: Omit<Video, 'id'>) => void;
-  updateVideo: (video: Video) => void;
-  deleteVideo: (videoId: string) => void;
+  addVideo: (video: Omit<Video, 'id'>) => Promise<void>;
+  updateVideo: (video: Video) => Promise<void>;
+  deleteVideo: (videoId: string) => Promise<void>;
+  
+  // Fix: Added state and error handling properties to the context type.
+  // State & Error Handling
+  isLoading: boolean;
+  isSubmitting: boolean;
+  apiError: string | null;
+  clearApiError: () => void;
 }

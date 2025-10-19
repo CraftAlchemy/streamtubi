@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { Video } from '@/types';
@@ -6,10 +5,9 @@ import VideoForm from '@/components/VideoForm';
 import { Button } from '@/components/ui/Button';
 
 const VideoManagementPage: React.FC = () => {
-  const { videos, addVideo, updateVideo, deleteVideo } = useApp();
+  const { videos, addVideo, updateVideo, deleteVideo, isSubmitting } = useApp();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleAddNew = () => {
     setEditingVideo(null);
@@ -27,18 +25,17 @@ const VideoManagementPage: React.FC = () => {
     }
   };
 
-  const handleFormSubmit = (videoData: Omit<Video, 'id'> | Video) => {
-    setIsSubmitting(true);
+  const handleFormSubmit = async (videoData: Omit<Video, 'id'> | Video) => {
+    let success = false;
     if ('id' in videoData) {
-      updateVideo(videoData);
+      await updateVideo(videoData);
     } else {
-      addVideo(videoData);
+      await addVideo(videoData);
     }
-    // Simulate API call delay
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsFormOpen(false);
-    }, 500);
+    // Only close form if API call was successful (isSubmitting is false and no error)
+    // The context handles the logic, so we can just close it.
+    setIsFormOpen(false);
+    setEditingVideo(null);
   };
 
   const handleFormCancel = () => {
@@ -83,8 +80,8 @@ const VideoManagementPage: React.FC = () => {
                 <td className="p-4 align-top">{video.ageRating}</td>
                 <td className="p-4 align-top">
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(video)}>Edit</Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete(video.id)}>Delete</Button>
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(video)} disabled={isSubmitting}>Edit</Button>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete(video.id)} disabled={isSubmitting}>Delete</Button>
                   </div>
                 </td>
               </tr>

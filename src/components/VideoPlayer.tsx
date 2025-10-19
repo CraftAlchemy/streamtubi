@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Video } from '@/types';
 import { useApp } from '@/context/AppContext';
@@ -86,6 +85,12 @@ const VideoPlayer: React.FC<{ video: Video }> = ({ video }) => {
     };
   }, [isPlaying, isShowingAd, isPremium, video.adBreaks, playedAdBreaks]);
 
+  // Fix: Defined the handleAdFinish function to handle the completion of an ad.
+  const handleAdFinish = () => {
+    setIsShowingAd(false);
+    setIsPlaying(true);
+  };
+  
   // Effect to manage the ad countdown timer
   useEffect(() => {
     let adTimer: number;
@@ -139,11 +144,6 @@ const VideoPlayer: React.FC<{ video: Video }> = ({ video }) => {
           setIsMuted(true);
       }
     }
-  };
-
-  const handleAdFinish = () => {
-    setIsShowingAd(false);
-    setIsPlaying(true);
   };
 
   const formatTime = (time: number) => {
